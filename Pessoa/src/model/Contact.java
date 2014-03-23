@@ -6,7 +6,7 @@ package model;
  * @author Simor
  * 
  */
-public class Contact {
+public class Contact implements Comparable<Contact> {
 	private String name;
 	private String phone;
 
@@ -24,5 +24,10 @@ public class Contact {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	@Override
+	public int compareTo(Contact contact) {
+		return this.getName().toLowerCase().compareTo(contact.getName().toLowerCase());
 	}
 }

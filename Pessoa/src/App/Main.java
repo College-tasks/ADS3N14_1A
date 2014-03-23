@@ -1,17 +1,28 @@
 package App;
 
 import Utils.ContactFile;
+import structures.*;
+import model.*;
 
 public class Main {
 	public static void main(String[] args) {
 		ContactFile x = new ContactFile();
-		if (x.createContacts(100))
+		SortedList<Contact> list = new SortedList<Contact>();
+		
+		x.createContacts(10);
+		list = x.loadContacts();
+		
+		Node<Contact> y = list.getHead();
+		
+		System.out.println("--------------------");
+		
+		while (y.getNext() != null)
 		{
-			System.out.println("Ok!");
-		}
-		else
-		{
-			System.out.println("Nope!");
+			System.out.println("Nome: " + y.getKey().getName());
+			System.out.println("Fone: " + y.getKey().getPhone());
+			System.out.println("--------------------");
+			
+			y = y.getNext();
 		}
 	}
 }
