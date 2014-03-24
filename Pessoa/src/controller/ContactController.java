@@ -3,6 +3,7 @@ package controller;
 import java.util.Scanner;
 
 import Utils.ContactFile;
+import Utils.SortedListUtils;
 import model.Contact;
 import view.ContactView;
 import structures.*;
@@ -34,7 +35,7 @@ public class ContactController {
 		
 		while(flagOk)
 		{
-			System.out.print(">");
+			view.showInput();
 			
 			try {
 				option = (new Scanner(System.in)).nextInt();
@@ -56,12 +57,39 @@ public class ContactController {
 				break;
 			case 3:
 				// Input a character
-				String ch = (new Scanner(System.in)).next();
-				//Node<Contact> nextNode = list.getFromChar(ch);
+				SortedListUtils sortedUtils = new SortedListUtils(this.list);
+				view.showInput();
+				String ch = (new Scanner(System.in)).nextLine();
 				
+				if (ch.length() > 1)
+				{
+					this.view.showErrorMessage("Digite somente uma letra!");
+				}
+				else
+				{
+					Node<Contact> nextNode = sortedUtils.getFromChar(ch);
+					
+					if (nextNode == null)
+					{
+						this.view.showErrorMessage("Nada encontrado!");
+					}
+					else {
+						this.currentNode = nextNode;
+					}
+				}
+				
+				showContact();
 				break;
 			case 4:
 				// Add a contact
+				String name, phone;
+				
+				view.showInputName();
+				name = (new Scanner(System.in)).nextLine();
+				view.showInputPhone();
+				phone = (new Scanner(System.in)).nextLine();
+				
+				
 				break;
 			case 0:
 				// Exit

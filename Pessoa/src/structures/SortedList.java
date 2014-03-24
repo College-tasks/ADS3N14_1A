@@ -48,7 +48,7 @@ public class SortedList<T extends Comparable<T>>
 		}
 		return previous;
 	}
-	
+
 	@Override
 	public void append(Node<T> newNode)
 	{
