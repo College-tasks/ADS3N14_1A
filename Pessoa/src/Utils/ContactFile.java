@@ -50,7 +50,7 @@ public class ContactFile {
 	 * 
 	 * @return SortedList of contacts
 	 */
-	public SortedList<Contact> loadContacts() {
+	public static SortedList<Contact> loadContacts() {
 		SortedList<Contact> ret = new SortedList<Contact>();
 		Contact contact = new Contact();
 		String row;

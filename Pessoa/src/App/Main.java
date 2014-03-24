@@ -1,11 +1,16 @@
 package App;
 
+import controller.ContactController;
 import Utils.ContactFile;
 import structures.*;
 import model.*;
 
 public class Main {
 	public static void main(String[] args) {
+		ContactController controller = new ContactController();
+		controller.showContact();
+		
+		/*
 		ContactFile x = new ContactFile();
 		SortedList<Contact> list = new SortedList<Contact>();
 		
@@ -24,5 +29,6 @@ public class Main {
 			
 			y = y.getNext();
 		}
+		*/
 	}
 }
