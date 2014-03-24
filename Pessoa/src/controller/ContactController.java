@@ -31,7 +31,7 @@ public class ContactController {
 		view.showContact(currentNode);
 		boolean flagOk = true;
 		int option;
-		Node<Contact> tempContact;
+		
 		
 		while(flagOk)
 		{
@@ -44,63 +44,20 @@ public class ContactController {
 			switch(option)
 			{
 			case 1:
-				// Previous Contact
-				tempContact = list.getPrevious(currentNode);
-				this.currentNode = tempContact == null ? list.getTail() : tempContact;
+				previousContact();
 				showContact();
 				break;
 			case 2:
-				// Next Contact
-				tempContact = currentNode.getNext();
-				this.currentNode = tempContact == null ? list.getHead() : tempContact;
+				nextContact();
 				showContact();
 				break;
 			case 3:
-				// Input a character
-				SortedListUtils sortedUtils = new SortedListUtils(this.list);
-				view.showInput();
-				String ch = (new Scanner(System.in)).nextLine();
-				
-				if (ch.length() > 1)
-				{
-					this.view.showErrorMessage("Digite somente uma letra!");
-				}
-				else
-				{
-					Node<Contact> nextNode = sortedUtils.getFromChar(ch);
-					
-					if (nextNode == null)
-					{
-						this.view.showErrorMessage("Nada encontrado!");
-					}
-					else {
-						this.currentNode = nextNode;
-					}
-				}
-				
+				inputContact();
 				showContact();
 				break;
 			case 4:
-				// Add a contact
-				String name, phone;
-				Node<Contact> node = new Node<Contact>();
-				Contact contact = new Contact();
-				
-				// Inputs
-				view.showInputName();
-				name = (new Scanner(System.in)).nextLine();
-				view.showInputPhone();
-				phone = (new Scanner(System.in)).nextLine();
-				
-				contact.setName(name);
-				contact.setPhone(phone);
-				node.setKey(contact);
-				
-				ContactFile.addContact(contact);
-				list.insert(node);
-				
+				addContact();
 				showContact();
-				
 				break;
 			case 0:
 				// Exit
@@ -108,5 +65,79 @@ public class ContactController {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Shows the previous contact
+	 */
+	private void previousContact()
+	{
+		Node<Contact> tempContact;
+		tempContact = list.getPrevious(currentNode);
+		this.currentNode = tempContact == null ? list.getTail() : tempContact;
+	}
+	
+	/**
+	 * Shows the next contact
+	 */
+	private void nextContact()
+	{
+		Node<Contact> tempContact;
+		tempContact = currentNode.getNext();
+		this.currentNode = tempContact == null ? list.getHead() : tempContact;
+	}
+	
+	/**
+	 * Shows the searched (if exists) contact
+	 */
+	private void inputContact()
+	{
+		// Input a character
+		SortedListUtils sortedUtils = new SortedListUtils(this.list);
+		view.showInput();
+		String ch = (new Scanner(System.in)).nextLine();
+		
+		if (ch.length() > 1)
+		{
+			this.view.showErrorMessage("Digite somente uma letra!");
+		}
+		else
+		{
+			Node<Contact> nextNode = sortedUtils.getFromChar(ch);
+			
+			if (nextNode == null)
+			{
+				this.view.showErrorMessage("Nada encontrado!");
+			}
+			else {
+				this.currentNode = nextNode;
+			}
+		}
+		
+	}
+	
+	/**
+	 * Adds the a contact (List and file)
+	 */
+	private void addContact()
+	{
+		// Add a contact
+		String name, phone;
+		Node<Contact> node = new Node<Contact>();
+		Contact contact = new Contact();
+		
+		// Inputs
+		view.showInputName();
+		name = (new Scanner(System.in)).nextLine();
+		view.showInputPhone();
+		phone = (new Scanner(System.in)).nextLine();
+		
+		contact.setName(name);
+		contact.setPhone(phone);
+		node.setKey(contact);
+		
+		ContactFile.addContact(contact);
+		list.insert(node);
+		
 	}
 }
