@@ -83,12 +83,23 @@ public class ContactController {
 			case 4:
 				// Add a contact
 				String name, phone;
+				Node<Contact> node = new Node<Contact>();
+				Contact contact = new Contact();
 				
+				// Inputs
 				view.showInputName();
 				name = (new Scanner(System.in)).nextLine();
 				view.showInputPhone();
 				phone = (new Scanner(System.in)).nextLine();
 				
+				contact.setName(name);
+				contact.setPhone(phone);
+				node.setKey(contact);
+				
+				ContactFile.addContact(contact);
+				list.insert(node);
+				
+				showContact();
 				
 				break;
 			case 0:

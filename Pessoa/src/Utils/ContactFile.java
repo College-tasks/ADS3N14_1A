@@ -21,6 +21,7 @@ public class ContactFile {
 
 		// Check and create the contacts file
 		if (checkFileExists("contacts.txt")) {
+			ContactFile.loadContacts();
 			return true;
 		}
 
@@ -85,6 +86,17 @@ public class ContactFile {
 	}
 
 	/**
+	 * Adds a contact to the file
+	 * @param contact Contact to be added
+	 */
+	public static void addContact(Contact contact)
+	{		
+		try(PrintWriter file = new PrintWriter(new BufferedWriter(new FileWriter("contacts.txt", true)))) {
+		    file.println(contact.getName().toUpperCase() + "##" + contact.getPhone().toUpperCase());
+		}catch (Exception ex) {}
+	}
+	
+	/**
 	 * Checks if the file exists in the given path
 	 * 
 	 * @param fPath
@@ -146,4 +158,5 @@ public class ContactFile {
 
 		return ret;
 	}
+
 }
