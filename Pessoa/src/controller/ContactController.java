@@ -63,6 +63,7 @@ public class ContactController {
 				break;
 			case 0:
 				// Exit
+				flagOk = false;
 				System.exit(0);
 				break;
 			}
