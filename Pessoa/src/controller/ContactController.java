@@ -12,6 +12,7 @@ public class ContactController {
 	private ContactView view;
 	private SortedList<Contact> list;
 	private Node<Contact> currentNode;
+	private NormalList normalList;
 	
 	/**
 	 * Constructor - Initialize variables
@@ -21,6 +22,7 @@ public class ContactController {
 		list = ContactFile.loadContacts();
 		view = new ContactView();
 		currentNode = list.getHead();
+		normalList = new NormalList(list);
 	}
 	
 	/**
@@ -96,6 +98,8 @@ public class ContactController {
 		SortedListUtils sortedUtils = new SortedListUtils(this.list);
 		view.showInput();
 		String ch = (new Scanner(System.in)).nextLine();
+		int comparisonsSorted = 0;
+		int comparisonsBinary = 0;
 		
 		if (ch.length() > 1)
 		{
@@ -103,7 +107,7 @@ public class ContactController {
 		}
 		else
 		{
-			Node<Contact> nextNode = sortedUtils.getFromChar(ch);
+			Node<Contact> nextNode = normalList.searchContact(ch);
 			
 			if (nextNode == null)
 			{
@@ -113,6 +117,11 @@ public class ContactController {
 				this.currentNode = nextNode;
 			}
 		}
+		
+		comparisonsSorted = sortedUtils.getFromChar(ch, true);
+		comparisonsBinary = normalList.searchContact(ch, true);
+		this.view.showSortedCount(comparisonsSorted);
+		this.view.showBinaryCount(comparisonsBinary);
 		
 	}
 	

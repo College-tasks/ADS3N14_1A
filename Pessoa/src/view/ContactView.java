@@ -58,4 +58,22 @@ public class ContactView {
 		out.println("Digite o telefone: ");
 		showInput();
 	}
+	
+	/**
+	 * Show the count for SortedList
+	 * @param count The count of comparisons made
+	 */
+	public void showSortedCount(int count)
+	{
+		out.println("Foram feitas " + count + " comparações na lista Encadeada.");
+	}
+	
+	/**
+	 * Show the count for the Binary Search
+	 * @param count The count of comparisons made
+	 */
+	public void showBinaryCount(int count)
+	{
+		out.println("Foram feitas " + count + " comparações na busca binária.");
+	}
 }

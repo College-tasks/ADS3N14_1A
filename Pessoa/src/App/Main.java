@@ -10,26 +10,5 @@ public class Main {
 		ContactController controller = new ContactController();
 		(new ContactFile()).createContacts(50);
 		controller.showContact();
-		
-		/*
-		ContactFile x = new ContactFile();
-		SortedList<Contact> list = new SortedList<Contact>();
-		
-		x.createContacts(10);
-		list = x.loadContacts();
-		
-		Node<Contact> y = list.getHead();
-		
-		System.out.println("--------------------");
-		
-		while (y.getNext() != null)
-		{
-			System.out.println("Nome: " + y.getKey().getName());
-			System.out.println("Fone: " + y.getKey().getPhone());
-			System.out.println("--------------------");
-			
-			y = y.getNext();
-		}
-		*/
 	}
 }

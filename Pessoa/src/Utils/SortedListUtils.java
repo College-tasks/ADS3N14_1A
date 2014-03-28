@@ -36,4 +36,27 @@ public class SortedListUtils {
 		
 		return null;
 	}
+	
+	/**
+	 * Search the list of contacts and return the count of comparisons made
+	 * @param chr String to be searched
+	 * @return Count of comparisons made
+	 */
+	public int getFromChar(String chr, boolean flag)
+	{
+		Node<Contact> current = this.list.getHead();
+		int count = 0;
+		
+		while (current != null)
+		{
+			count++;
+			if (current.getKey().getName().toLowerCase().startsWith(chr.toLowerCase()))
+			{
+				break;
+			}
+			current = current.getNext();
+		}
+		
+		return count;
+	}
 }
