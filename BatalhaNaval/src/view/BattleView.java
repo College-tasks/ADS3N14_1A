@@ -3,6 +3,8 @@ package view;
 import static java.lang.System.out;
 import java.util.Scanner;
 
+import model.DeployedShip;
+
 /**
  * View of the Battle
  * 
@@ -96,6 +98,23 @@ public class BattleView {
 		out.println("Você errou! Água!");
 	}
 
+	/**
+	 * Shows a hit message
+	 * @param ship Deployed ship that has hit
+	 */
+	public void showHitMessage(DeployedShip ship) {
+		out.println("Você acertou um " + ship.getName());
+	}
+	
+	/**
+	 * Shows a "ship destroyed" message
+	 * @param ship Deployed ship that has destroyed
+	 */
+	public void showDestroyedMessage(DeployedShip ship)
+	{
+		out.println("Você destruiu um " + ship.getName());
+	}
+	
 	/**
 	 * Show the count of points left
 	 * @param count Number of points left

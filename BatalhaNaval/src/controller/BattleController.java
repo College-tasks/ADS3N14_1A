@@ -209,7 +209,26 @@ public class BattleController {
 	 */
 	private void hitShip(int x, int y)
 	{
-		
+		// For each deployed ship
+		for (DeployedShip item : lstDeployed)
+		{
+			// For each coordinate of the deployed ship
+			for (String item2 : item.getDeployedCoord())
+			{
+				// If found, it's the ship that got the hit 
+				if (item2.equals(x + "" + y)){
+					item.setHitCount(item.getHitCount()+1);
+					view.showHitMessage(item);
+					if (item.getHitCount() == item.getSize())
+					{
+						this.chances += 5;
+						view.showDestroyedMessage(item);
+					}
+					break;
+				}
+			}
+			
+		}
 	}
 	
 	/**
