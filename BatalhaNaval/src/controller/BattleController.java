@@ -4,18 +4,23 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import model.*;
+import utils.Utils;
 import view.*;
 
 public class BattleController {
 	ArrayList<Ship> lstShip;
+	ArrayList<DeployedShip> lstDeployed;
 	String[][] table = new String[10][10];
 	BattleView view;
+	int chances;
 
 	/**
 	 * Constructor
 	 */
 	public BattleController() {
 		lstShip = new ArrayList<Ship>();
+		lstDeployed = new ArrayList<DeployedShip>();
+		chances = 15;
 
 		lstShip.add(new Ship("Porta-aviões", 5));
 		lstShip.add(new Ship("Destroyer", 4));
@@ -47,6 +52,49 @@ public class BattleController {
 	 */
 	public void showTable() {
 		view.showTable(this.table);
+		String coord = view.play();
+		if (coord.length() == 2)
+		{
+			shoot(coord);
+		} else {
+			view.showErrorMessage("Digite uma coordenada correta!");
+			showTable();
+		}
+		
+	}
+	
+	/**
+	 * Shoot!
+	 * @param coord Coordinate of the shot
+	 */
+	private void shoot(String coord)
+	{
+		int x = Integer.parseInt(coord.substring(1, 2));
+		int y = Utils.convertLetterToInt(coord.charAt(0));
+		
+		String value = table[x][y];
+		
+		if (value.equals("0"))
+		{
+			table[x][y] = "2";
+			this.chances--;
+			view.showWaterMessage();
+			view.showPointsLeft(this.chances);
+			
+		} else if(value.equals("1"))
+		{
+			table[x][y] = "3";
+			this.chances--;
+			this.chances += 3;
+			hitShip(x, y);
+			view.showPointsLeft(this.chances);
+		}
+		else
+		{
+			view.showErrorMessage("Coordenada já usada!");
+		}
+		checkStatus();
+		showTable();
 	}
 
 	/**
@@ -69,14 +117,14 @@ public class BattleController {
 				// If the ship can be deployed, deploy it
 				if (flagOk) {
 					deployShip(initPosFix, initPosDyn, horizontal,
-							item.getSize());
+							item.getSize(), item.getName());
 				}
 			}
 		}
 	}
 
 	/**
-	 * Check if the ship can be deployed
+	 * Checks if the ship can be deployed
 	 * 
 	 * @param initPosFix
 	 *            Initial "fixed" position
@@ -88,8 +136,7 @@ public class BattleController {
 	 *            The size of the Ship
 	 * @return If the ship can be deployed
 	 */
-	private boolean checkShip(int initPosFix, int initPosDyn,
-			boolean horizontal, int itemSize) {
+	private boolean checkShip(int initPosFix, int initPosDyn, boolean horizontal, int itemSize) {
 		boolean flag = true;
 		// Horizontally
 		if (horizontal) {
@@ -124,7 +171,7 @@ public class BattleController {
 	}
 
 	/**
-	 * Deploy the ship within the coordinates
+	 * Deploys the ship within the coordinates
 	 * 
 	 * @param initPosFix
 	 *            Initial "fixed" position
@@ -135,19 +182,78 @@ public class BattleController {
 	 * @param itemSize
 	 *            The size of the Ship
 	 */
-	private void deployShip(int initPosFix, int initPosDyn, boolean horizontal,
-			int itemSize) {
+	private void deployShip(int initPosFix, int initPosDyn, boolean horizontal, int itemSize, String itemName) {
+		DeployedShip deployed = new DeployedShip(itemName, itemSize);
 		// Horizontally
 		if (horizontal) {
 			for (int i = initPosDyn; i < initPosDyn + itemSize; i++) {
 				table[i][initPosFix] = "1";
+				deployed.addDeployedCoord(i + "" + initPosFix);
 			}
 		}
 		// Vertically
 		else {
 			for (int i = initPosDyn; i < initPosDyn + itemSize; i++) {
 				table[initPosFix][i] = "1";
+				deployed.addDeployedCoord(initPosFix + "" + i);
 			}
 		}
+		
+		lstDeployed.add(deployed);
 	}
+
+	/**
+	 * Verifies which ship has been hit
+	 * @param x Coordinate X
+	 * @param y Coordinate Y
+	 */
+	private void hitShip(int x, int y)
+	{
+		
+	}
+	
+	/**
+	 * Checks if the player have Won or Lost
+	 */
+	private void checkStatus()
+	{
+		checkGameWin();
+		checkGameOver();
+	}
+	
+	/**
+	 * Checks if the player have lost the game
+	 */
+	private void checkGameOver()
+	{
+		if(chances == 0)
+		{
+			view.showGameOver();
+			System.exit(0);
+		}
+	}
+
+	/**
+	 * Checks if the player have won que game
+	 */
+	private void checkGameWin()
+	{
+		boolean flagOk = true;
+		for(DeployedShip item : lstDeployed)
+		{
+			if (item.getSize() != item.getHitCount())
+			{
+				flagOk = false;
+				break;
+			}
+		}
+		
+		if (flagOk)
+		{
+			view.showGameWin();
+			System.exit(0);
+		}
+	}
+
+	
 }
