@@ -13,11 +13,13 @@ public class BubbleSort {
 		int swapCount = 0;
 		int checkCount = 0;
 		int[] sortedArray = unsortedArray;
+		boolean flagSwap;
 		
 		// Go through the numbers
 		for (int i = 0; i < sortedArray.length; i++) {
+			flagSwap = false;
 			// Actual number to check
-			for (int j = 0; j < sortedArray.length - 1; j++) {
+			for (int j = 0; j < sortedArray.length-1; j++) {
 				// Verifies if is gonna have a swap
 				if (sortedArray[j] > sortedArray[j + 1])
 				{
@@ -25,8 +27,12 @@ public class BubbleSort {
 					sortedArray[j] = sortedArray[j + 1];
 					sortedArray[j + 1] = swap;
 					swapCount++;
+					flagSwap = true;
 				}
 				checkCount++;
+			}
+			if (!flagSwap){
+				break;
 			}
 		}
 		
