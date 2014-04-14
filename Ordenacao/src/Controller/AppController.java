@@ -19,10 +19,10 @@ public class AppController {
 	 */
 	public AppController(){
 		view = new AppView();
-		unsortedArray = new int[10];
+		unsortedArray = new int[20];
 		
 		// Initialize the unsorted list of numbers
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 20; i++)
 		{
 			unsortedArray[i] = (new Random()).nextInt(50);
 		}
@@ -34,6 +34,6 @@ public class AppController {
 	public void init(){
 		view.showUnsortedArray(this.unsortedArray);
 		BubbleSort.sort(this.unsortedArray);
-		MergeSort.sort(this.unsortedArray);
+		(new MergeSort()).sort(this.unsortedArray);
 	}
 }
