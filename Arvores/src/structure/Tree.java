@@ -145,4 +145,52 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 		
 		return count;
 	}
+
+	/**
+	 * Search a Node in the Tree
+	 * @param key Key to be searched
+	 * @return The found Node (Or null, case the Node was not found)
+	 */
+	public Node<T, S> searchNode(S key)
+	{
+		return searchNode(key, getRoot(), 0);
+	}
+	
+	/**
+	 * Search a Node in the Tree
+	 * @param key Key to be searched
+	 * @param root Root Node
+	 * @param count Count of comparisons
+	 * @return The found Node (Or null, case the Node was not found)
+	 */
+	private Node<T, S> searchNode(S key, Node<T, S> root, int count)
+	{
+		// Verify root
+		if (root.getKey().compareTo(key) == 0)
+		{
+			System.out.println("======================================");
+			System.out.println("Comparações feitas: " + count);
+			System.out.println("======================================");
+			return root;
+		}
+		
+		// Compare child
+		if (root.getKey().compareTo(key) < 0)
+		{
+			if (root.getLeftNode() != null)
+			{
+				return searchNode(key, root.getLeftNode(), count++);
+			}
+		}
+		else
+		{
+			if (root.getRightNode() != null)
+			{
+				return searchNode(key, root.getRightNode(), count++);
+			}
+		}
+		
+		System.out.println("Comparações feitas: " + count);
+		return null;
+	}
 }
