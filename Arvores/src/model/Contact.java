@@ -32,4 +32,17 @@ public class Contact implements Comparable<Contact> {
 	public int compareTo(Contact contact) {
 		return this.getName().toLowerCase().compareTo(contact.getName().toLowerCase());
 	}
+	
+	/**
+	 * Return a 'toString' String (Name + Phone)
+	 */
+	public String toString()
+	{
+		String ret = "===========================\n";
+		ret += "Nome: " + getName() + "\n";
+		ret += "Telefone: " + getPhone() + "\n";
+		ret += "===========================\n";
+		
+		return ret;
+	}
 }

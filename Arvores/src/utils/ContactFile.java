@@ -7,6 +7,11 @@ import java.io.*;
 import model.*;
 import structure.*;
 
+/**
+ * Tool class to save/load a contact list
+ * @author Simor
+ *
+ */
 public class ContactFile {
 
 	/**

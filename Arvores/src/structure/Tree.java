@@ -20,6 +20,58 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 	}
 	
 	/**
+	 * Gets the first Node (Order)
+	 * @return The first Node
+	 */
+	public Node<T, S> getFirst()
+	{
+		return getFirst(getRoot());
+	}
+	
+	/**
+	 * Gets the first Node (Order) - Recursive
+	 * @param root Root node
+	 * @return The first Node
+	 */
+	private Node<T, S> getFirst(Node<T, S> root)
+	{
+		if (root.getLeftNode() == null)
+		{
+			return root;
+		}
+		else
+		{
+			return getFirst(root.getLeftNode());
+		}
+	}
+	
+	/**
+	 * Gets the last Node (Order)
+	 * @return The last Node
+	 */
+	public Node<T, S> getLast()
+	{
+		return getLast(getRoot());
+	}
+	
+	/**
+	 * Gets the last Node (Order)
+	 * @param root Root node
+	 * @return The last Node
+	 */
+	private Node<T, S> getLast(Node<T, S> root)
+	{
+		if (root.getRightNode() == null)
+		{
+			return root;
+		}
+		else
+		{
+			return getLast(root.getRightNode());
+		}
+	}
+	
+	/**
 	 * Add a Node to the Tree
 	 * @param node Node to be added
 	 * @param root The root of the Node (Only for recursive function)
