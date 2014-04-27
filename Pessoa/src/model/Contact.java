@@ -7,6 +7,7 @@ package model;
  * 
  */
 public class Contact implements Comparable<Contact> {
+	// Attributes
 	private String name;
 	private String phone;
 
