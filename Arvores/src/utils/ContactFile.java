@@ -51,9 +51,9 @@ public class ContactFile {
 	 * 
 	 * @return SortedList of contacts
 	 */
-	public static Tree<Contact> loadContacts() {
-		Tree<Contact> ret = new Tree<Contact>();
-		Node<Contact> nRoot = null;
+	public static Tree<Contact, String> loadContacts() {
+		Tree<Contact, String> ret = new Tree<Contact, String>();
+		Node<Contact, String> nRoot = null;
 		Contact contact = new Contact();
 		String row;
 
@@ -66,7 +66,7 @@ public class ContactFile {
 			while ((row = textReader.readLine()) != null) {
 				contact = new Contact();
 				String[] rowSplit = row.split("##");
-				Node<Contact> node = new Node<Contact>();
+				Node<Contact, String> node = new Node<Contact, String>();
 				
 				contact.setName(rowSplit[0]);
 				contact.setPhone(rowSplit[1]);
@@ -75,7 +75,7 @@ public class ContactFile {
 				
 				node.setRoot(nRoot);
 				
-				ret.addNode(node);
+				ret.addNode(node, null, 0, false);
 			}
 			
 			textReader.close();
