@@ -6,7 +6,7 @@ import controller.*;
 public class Main {
 	public static void main(String[] args) {
 		// Initialize the app
-		(new ContactFile()).createContacts(20);
+		(new ContactFile()).createContacts(30);
 		AppController controller = new AppController();
 		controller.showContact();
 	}

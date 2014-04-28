@@ -1,7 +1,7 @@
 package utils;
 
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 import java.io.*;
 
 import model.*;
@@ -17,8 +17,7 @@ public class ContactFile {
 	/**
 	 * Create a file (if not exists) with N contacts
 	 * 
-	 * @param maxContacts
-	 *            Number of contacts to generate
+	 * @param maxContacts Number of contacts to generate
 	 * @return Success of fail of the operation
 	 */
 	public boolean createContacts(int maxContacts) {
@@ -51,6 +50,60 @@ public class ContactFile {
 		return true;
 	}
 
+	/**
+	 * Create a file with Contacts from a Tree
+	 * @param tree Tree of Contacts
+	 */
+	public static void saveContacts(Tree<Contact, String> tree)
+	{
+		ArrayList<Node<Contact, String>> queueNode = new ArrayList<Node<Contact, String>>();
+		ArrayList<Node<Contact, String>> lstNode = new ArrayList<Node<Contact, String>>();
+		
+		// Add root
+		queueNode.add(tree.getRoot());
+		
+		// While queue is not empty
+		while(!queueNode.isEmpty())
+		{
+			Node<Contact, String> node = queueNode.get(0);
+			lstNode.add(node);
+			queueNode.remove(node);
+			
+			// Add left child
+			if (node.getLeftNode() != null)
+			{
+				queueNode.add(node.getLeftNode());
+			}
+			
+			// Add right child
+			if (node.getRightNode() != null)
+			{
+				queueNode.add(node.getRightNode());
+			}
+		}
+		
+		Writer writer = null;
+		try
+		{
+			// Write the file
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("contacts.txt"), "utf-8"));
+			
+			for (Node<Contact, String> item : lstNode)
+			{
+				writer.write(item.getValue().getName() + "##" + item.getValue().getPhone() + "\n");
+			}
+		}
+		catch (IOException ex) {}
+		finally 
+		{
+			try
+			{
+				writer.close();
+			}
+			catch (IOException e) {}
+		}
+	}
+	
 	/**
 	 * Load a contacts file (If exists)
 	 * 

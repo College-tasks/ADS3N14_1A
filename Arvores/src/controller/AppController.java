@@ -17,7 +17,6 @@ public class AppController {
 	private AppView view;
 	private Tree<Contact, String> list;
 	private Node<Contact, String> currentNode;
-	private ShowType showType;
 	
 	/**
 	 * Constructor - Initialize variables
@@ -72,8 +71,6 @@ public class AppController {
 	 */
 	private void previousContact()
 	{
-		boolean flagOk = false;
-		
 		// If is the first Node, go to the last
 		if (currentNode == this.list.getFirst())
 		{
@@ -400,6 +397,6 @@ public class AppController {
 	 */
 	private void saveTree()
 	{
-		
+		utils.ContactFile.saveContacts(this.list);
 	}
 }
