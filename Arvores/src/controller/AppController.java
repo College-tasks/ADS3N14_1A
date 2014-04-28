@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import view.*;
 import structure.*;
 import utils.*;
@@ -258,7 +260,30 @@ public class AppController {
 	 */
 	private void showBreadth()
 	{
+		ArrayList<Node<Contact, String>> queueNode = new ArrayList<Node<Contact, String>>();
 		
+		// Add root
+		queueNode.add(this.list.getRoot());
+		
+		// While queue is not empty
+		while(!queueNode.isEmpty())
+		{
+			Node<Contact, String> node = queueNode.get(0);
+			view.showKey(node);
+			queueNode.remove(node);
+			
+			// Add left child
+			if (node.getLeftNode() != null)
+			{
+				queueNode.add(node.getLeftNode());
+			}
+			
+			// Add right child
+			if (node.getRightNode() != null)
+			{
+				queueNode.add(node.getRightNode());
+			}
+		}
 	}
 	
 	/**
@@ -266,7 +291,30 @@ public class AppController {
 	 */
 	private void showDepth()
 	{
+		ArrayList<Node<Contact, String>> stackNode = new ArrayList<Node<Contact, String>>();
 		
+		// Add root
+		stackNode.add(this.list.getRoot());
+		
+		// While stack is not empty
+		while(!stackNode.isEmpty())
+		{
+			Node<Contact, String> node = stackNode.get(stackNode.size()-1);
+			view.showKey(node);
+			stackNode.remove(node);
+			
+			// Add right child
+			if (node.getRightNode() != null)
+			{
+				stackNode.add(node.getRightNode());
+			}
+			
+			// Add left child
+			if (node.getLeftNode() != null)
+			{
+				stackNode.add(node.getLeftNode());
+			}
+		}
 	}
 	
 	/**
