@@ -80,7 +80,7 @@ public class ContactFile {
 				
 				node.setRoot(nRoot);
 				
-				ret.addNode(node, null, 0, false);
+				ret.addNode(node, false);
 			}
 			
 			textReader.close();

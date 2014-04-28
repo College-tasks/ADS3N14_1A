@@ -30,7 +30,7 @@ public class Contact implements Comparable<Contact> {
 	// CompareTo
 	@Override
 	public int compareTo(Contact contact) {
-		return this.getName().toLowerCase().compareTo(contact.getName().toLowerCase());
+		return this.getName().trim().toLowerCase().compareTo(contact.getName().trim().toLowerCase());
 	}
 	
 	/**
