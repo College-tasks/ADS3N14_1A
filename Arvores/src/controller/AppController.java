@@ -72,15 +72,93 @@ public class AppController {
 	 */
 	private void previousContact()
 	{
+		boolean flagOk = false;
 		
+		// If is the first Node, go to the last
+		if (currentNode == this.list.getFirst())
+		{
+			currentNode = this.list.getLast();
+		}
+		else
+		{
+			currentNode = previousContact(currentNode);
+		}
+	}
+	
+	/**
+	 * Shows the previous Contact
+	 * @param node Current Node
+	 * @return Previous Node
+	 */
+	private Node<Contact, String> previousContact(Node<Contact, String> node)
+	{
+		// If the left Node is null
+		if(node.getLeftNode() == null)
+		{
+			// Gets the first parent of a "right child"
+			while(node.getKey().compareTo(node.getRoot().getKey()) < 0)
+			{
+				node = node.getRoot();
+			}
+			
+			return node.getRoot();
+		}
+		else
+		{
+			// If there is a right Node, gets the "last right child"
+			node = node.getLeftNode();
+			while(node.getRightNode() != null)
+			{
+				node = node.getRightNode();
+			}
+			return node;
+		}
 	}
 	
 	/**
 	 * Shows the next Contact
 	 */
 	private void nextContact()
+	{		
+		// If is the last Node, go to the first
+		if (currentNode == this.list.getLast())
+		{
+			currentNode = this.list.getFirst();
+		}
+		else
+		{
+			currentNode = nextContact(currentNode);
+		}
+	}
+	
+	/**
+	 * Shows the next Contact
+	 * @param currentNode The current node
+	 * @return Next node
+	 */
+	private Node<Contact, String> nextContact(Node<Contact, String> node)
 	{
-		
+		// If the right Node is null
+		if(node.getRightNode() == null)
+		{
+			// Gets the first parent of a "left child"
+			while(node.getKey().compareTo(node.getRoot().getKey()) >= 0)
+			{
+				node = node.getRoot();
+			}
+			
+			return node.getRoot();
+		}
+		else
+		{
+			// If there is a right Node, gets the "last left child"
+			node = node.getRightNode();
+			while(node.getLeftNode() != null)
+			{
+				node = node.getLeftNode();
+			}
+			return node;
+		}
 	}
 	
 	/**
