@@ -63,7 +63,10 @@ public class AppController {
 				break;
 		}
 		
-		showContact();
+		if (op != 0)
+		{
+			showContact();
+		}
 	}
 	
 	/**
@@ -165,7 +168,7 @@ public class AppController {
 	{
 		String key = view.searchContact();
 		
-		if (key != "")
+		if (!key.equals(""))
 		{
 			Node<Contact, String> node = this.list.searchNode(key);
 			
