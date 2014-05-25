@@ -1,89 +1,13 @@
 package structure;
 
 /**
- * Class that defines a Tree (Structure)
+ * Class that defines a RB Tree (Structure)
  * @author Simor
  *
  * @param <T> "Value" of the Node
  * @param <S> "Key" of the Node
  */
-public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
-	// Attributes
-	private Node<T, S> root;
-
-	// Getters & Setters
-	public Node<T, S> getRoot() {
-		return root;
-	}
-
-	public void setRoot(Node<T, S> root) {
-		this.root = root;
-	}
-
-	// Get Fist and Last
-	/**
-	 * Gets the first Node (Order)
-	 * @return The first Node
-	 */
-	public Node<T, S> getFirst()
-	{
-		return getFirst(getRoot());
-	}
-	
-	/**
-	 * Gets the first Node (Order) - Recursive
-	 * @param root Root node
-	 * @return The first Node
-	 */
-	private Node<T, S> getFirst(Node<T, S> root)
-	{
-		if (root.getLeftNode() == null)
-		{
-			return root;
-		}
-		else
-		{
-			return getFirst(root.getLeftNode());
-		}
-	}
-	
-	/**
-	 * Gets the last Node (Order)
-	 * @return The last Node
-	 */
-	public Node<T, S> getLast()
-	{
-		return getLast(getRoot());
-	}
-	
-	/**
-	 * Gets the last Node (Order)
-	 * @param root Root node
-	 * @return The last Node
-	 */
-	private Node<T, S> getLast(Node<T, S> root)
-	{
-		if (root.getRightNode() == null)
-		{
-			return root;
-		}
-		else
-		{
-			return getLast(root.getRightNode());
-		}
-	}
-	
-	// Add Node
-	/**
-	 * Add a Node to the Tree
-	 * @param node Node to be added
-	 * @param showCount If it will show the Count of Nodes and the Level of the added Node
-	 */
-	public void addNode(Node<T, S> node, boolean showCount)
-	{
-		addNode(node, getRoot(), 0, showCount);
-	}
-	
+public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree<T, S> {
 	/**
 	 * Add a Node to the Tree
 	 * @param node Node to be added
@@ -161,12 +85,13 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 		}
 		return level;
 	}
-	
+
 	// Delete Node
 	/**
 	 * Delete a Node from the Tree
 	 * @param node Node to be deleted
 	 */
+	@Override
 	public void deleteNode(Node<T, S> node)
 	{
 		Node<T, S> root = node.getRoot();
@@ -240,101 +165,29 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 			}
 		}
 	}
-	
-	// Count Nodes
-	/**
-	 * Count the number of Nodes from the Tree
-	 * @return
-	 */
-	public int countNodes()
-	{
-		return countNodes(1, getRoot());
-	}
-	
-	/**
-	 * Count the number of Nodes from the Tree
-	 * @param count The count number (Recursive only)
-	 * @param root The root to count
-	 * @return The final count
-	 */
-	private int countNodes(int count, Node<T, S> root)
-	{
-		// Verifies if the RightNode is not null and count the Child
-		if(root.getRightNode() != null)
-		{
-			count++;
-			count = countNodes(count, root.getRightNode());
-		}
-		
-		// Verifies if the LeftNode is not null and count the Child
-		if (root.getLeftNode() != null)
-		{
-			count++;
-			count = countNodes(count, root.getLeftNode());
-		}
-		
-		return count;
-	}
-
-	// Search Nodes
-	/**
-	 * Search a Node in the Tree
-	 * @param key Key to be searched
-	 * @return The found Node (Or null, case the Node was not found)
-	 */
-	public Node<T, S> searchNode(S key)
-	{
-		return searchNode(key, getRoot(), 1);
-	}
-	
-	/**
-	 * Search a Node in the Tree
-	 * @param key Key to be searched
-	 * @param root Root Node
-	 * @param count Count of comparisons
-	 * @return The found Node (Or null, case the Node was not found)
-	 */
-	private Node<T, S> searchNode(S key, Node<T, S> root, int count)
-	{
-		// Verify root
-		if (root.getKey().compareTo(key) == 0)
-		{
-			System.out.println("======================================");
-			System.out.println("Comparações feitas: " + count);
-			System.out.println("======================================");
-			return root;
-		}
-		
-		// Compare child
-		if (root.getKey().compareTo(key) > 0)
-		{
-			if (root.getLeftNode() != null)
-			{
-				count++;
-				return searchNode(key, root.getLeftNode(), count);
-			}
-		}
-		else
-		{
-			if (root.getRightNode() != null)
-			{
-				count++;
-				return searchNode(key, root.getRightNode(), count);
-			}
-		}
-		
-		System.out.println("Comparações feitas: " + count);
-		return null;
-	}
 
 	/**
-	 * Shows the tree
+	 * Shows the Tree
+	 * @param node Node to be shown
 	 */
+	@Override
 	public void showTree(Node<T,S> node)
+	{
+		System.out.println("*Nodos vermelhos serão mostrados com um hífen antes da key*");
+		showTree(node, true);
+	}
+	
+	/**
+	 * Shows the Tree (Recursive)
+	 * @param node Node to be shown
+	 * @param flag Recursive flag
+	 */
+	private void showTree(Node<T,S> node, boolean flag)
 	{
 		boolean flagLeft = node.getLeftNode() == null ? false : true;
 		boolean flagRight = node.getRightNode() == null ? false : true;
 		
+		if (!node.isBlack()) { System.out.print("-"); }
 		System.out.print(node.getKey());
 		
 		if (flagLeft || flagRight)
@@ -344,7 +197,7 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 			// Left nodes
 			if (flagLeft)
 			{
-				showTree(node.getLeftNode());
+				showTree(node.getLeftNode(), true);
 				if (flagRight)
 				{
 					System.out.print(", ");
@@ -354,36 +207,10 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 			// Right nodes
 			if (flagRight)
 			{
-				showTree(node.getRightNode());
+				showTree(node.getRightNode(), true);
 			}
 			
 			System.out.print(")");
 		}
-	}
-
-	/**
-	 * Performs a left rotation
-	 * @param node Node to be rotate
-	 */
-	protected void leftRotation(Node<T,S> node)
-	{
-		Node<T, S> L = node.getRightNode().getLeftNode();
-		Node<T, S> B = L;
-		node.getRightNode().setLeftNode(node);
-		node.setRightNode(B);
-		node = node.getRightNode();
-	}
-	
-	/**
-	 * Performs a right rotation
-	 * @param node Node to be rotate
-	 */
-	protected void rightRotation(Node<T, S> node)
-	{
-		Node<T, S> R = node.getLeftNode().getRightNode();
-		Node<T, S> B = R;
-		node.getLeftNode().setRightNode(node);
-		node.setLeftNode(B);
-		node = node.getLeftNode();
 	}
 }

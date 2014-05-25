@@ -13,6 +13,9 @@ public class Node<T, S> {
 	private Node<T, S> rightNode;
 	private S key;
 	private T value;
+	private int level;
+	private int balance;
+	private boolean black;
 	
 	// Getters & Setters
 	public Node<T, S> getRoot() {
@@ -44,5 +47,23 @@ public class Node<T, S> {
 	}
 	public void setValue(T value) {
 		this.value = value;
+	}
+	public int getLevel() {
+		return level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
+	}
+	public int getBalance() {
+		return balance;
+	}
+	public void setBalance(int balance) {
+		this.balance = balance;
+	}
+	public boolean isBlack() {
+		return black;
+	}
+	public void setBlack(boolean black) {
+		this.black = black;
 	}
 }
