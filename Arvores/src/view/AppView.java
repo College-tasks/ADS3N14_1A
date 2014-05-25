@@ -8,7 +8,7 @@ import structure.*;
 import static java.lang.System.out;
 
 /**
- * View class of the app
+ * View class of the app - T5
  * @author Simor
  *
  */

@@ -11,6 +11,17 @@ public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree
 	/**
 	 * Add a Node to the Tree
 	 * @param node Node to be added
+	 * @param showCount If it will show the Count of Nodes and the Level of the added Node
+	 */
+	@Override
+	public void addNode(Node<T, S> node, boolean showCount)
+	{
+		addNode(node, getRoot(), 0, showCount);
+	}
+	
+	/**
+	 * Add a Node to the Tree
+	 * @param node Node to be added
 	 * @param root The root of the Node (Recursive)
 	 * @param level Level of the Node (Recursive)
 	 * @param showCount If it will show the Count of Nodes and the Level of the added Node
@@ -34,6 +45,7 @@ public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree
 				System.out.println("O Nó foi adicionado no nível {" + level + "}.");
 				System.out.println("A contagem total de Nós é de: " + countNodes());
 				System.out.println("======================================");
+				System.out.println("Derp");
 			}
 		}
 		else
@@ -171,10 +183,10 @@ public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree
 	 * @param node Node to be shown
 	 */
 	@Override
-	public void showTree(Node<T,S> node)
+	public void showTree()
 	{
 		System.out.println("*Nodos vermelhos serão mostrados com um hífen antes da key*");
-		showTree(node, true);
+		showTree(super.getRoot(), true);
 	}
 	
 	/**

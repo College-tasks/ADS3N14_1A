@@ -17,6 +17,19 @@ public class Node<T, S> {
 	private int balance;
 	private boolean black;
 	
+	// Constructor
+	public Node()
+	{
+		root = null;
+		leftNode = null;
+		rightNode = null;
+		key = null;
+		value = null;
+		level = -1;
+		balance = 99;
+		black = true;
+	}
+	
 	// Getters & Setters
 	public Node<T, S> getRoot() {
 		return root;

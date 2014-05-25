@@ -8,7 +8,7 @@ import utils.*;
 import model.*;
 
 /**
- * Controller class of the app
+ * Controller class of the app - T5
  * @author Simor
  *
  */

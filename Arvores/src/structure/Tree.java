@@ -300,7 +300,7 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 		if (root.getKey().compareTo(key) == 0)
 		{
 			System.out.println("======================================");
-			System.out.println("Comparações feitas: " + count);
+			System.out.println("Comparações feitas para achar o Nó: " + count);
 			System.out.println("======================================");
 			return root;
 		}
@@ -328,9 +328,21 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 	}
 
 	/**
+	 * Shows the Tree
+	 */
+	public void showTree()
+	{
+		if (this instanceof AVL) System.out.print("AVL: ");
+		if (this instanceof RBT) System.out.print("RBT: ");
+		showTree(this.getRoot());
+		System.out.println("");
+		System.out.println("======================");
+	}
+	
+	/**
 	 * Shows the tree
 	 */
-	public void showTree(Node<T,S> node)
+	private void showTree(Node<T,S> node)
 	{
 		boolean flagLeft = node.getLeftNode() == null ? false : true;
 		boolean flagRight = node.getRightNode() == null ? false : true;
@@ -345,20 +357,28 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 			if (flagLeft)
 			{
 				showTree(node.getLeftNode());
-				if (flagRight)
-				{
-					System.out.print(", ");
-				}
+					
 			}
+			else 
+			{
+				System.out.print("[ ]");
+			}
+			
+			System.out.print(", ");
 			
 			// Right nodes
 			if (flagRight)
 			{
 				showTree(node.getRightNode());
 			}
+			else
+			{
+				System.out.print("[ ]");
+			}
 			
 			System.out.print(")");
 		}
+		
 	}
 
 	/**
@@ -367,11 +387,29 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 	 */
 	protected void leftRotation(Node<T,S> node)
 	{
+		Node<T, S> R = node.getRightNode();
 		Node<T, S> L = node.getRightNode().getLeftNode();
 		Node<T, S> B = L;
 		node.getRightNode().setLeftNode(node);
 		node.setRightNode(B);
-		node = node.getRightNode();
+
+		R.setRoot(node.getRoot());
+		if (node.getRoot() != null)
+		{
+			if(node.getRoot().getKey().compareTo(node.getKey()) <= 0)
+			{
+				node.getRoot().setRightNode(R);
+			}
+			else 
+			{
+				node.getRoot().setLeftNode(R);
+			}
+		}
+		else
+		{
+			setRoot(R);
+		}
+		node.setRoot(R);
 	}
 	
 	/**
@@ -380,10 +418,92 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 	 */
 	protected void rightRotation(Node<T, S> node)
 	{
+		Node<T, S> L = node.getLeftNode();
 		Node<T, S> R = node.getLeftNode().getRightNode();
 		Node<T, S> B = R;
 		node.getLeftNode().setRightNode(node);
 		node.setLeftNode(B);
-		node = node.getLeftNode();
+		
+		L.setRoot(node.getRoot());
+		if (node.getRoot() != null)
+		{
+			if(node.getRoot().getKey().compareTo(node.getKey()) <= 0)
+			{
+				node.getRoot().setRightNode(L);
+			}
+			else 
+			{
+				node.getRoot().setLeftNode(L);
+			}
+		}
+		else
+		{
+			setRoot(L);
+		}
+		node.setRoot(L);
+	}
+
+	/**
+	 * Resets the Balance and Level of all Nodes
+	 */
+	protected void resetTree()
+	{
+		resetTree(this.getRoot());
+	}
+	
+	/**
+	 * Resets the Balance and Level of all Nodes
+	 * @param node Root of the tree
+	 */
+	private void resetTree(Node<T, S> node)
+	{
+		if (node != null)
+		{			
+			node.setBalance(99);
+			node.setLevel(-1);
+			
+			resetTree(node.getLeftNode());
+			resetTree(node.getRightNode());
+		}
+	}
+	
+	/**
+	 * Shows the level of the root node
+	 */
+	protected void showRootLevel()
+	{
+		showRootLevel(this.getRoot());
+	}
+	
+	/**
+	 * Shows the level of the root node
+	 * @param node Node to be calculated
+	 */
+	private void showRootLevel(Node<T, S> node)
+	{
+		// Leaf
+		if (node.getLeftNode() == null && node.getRightNode() == null)
+		{
+			node.setLevel(0);
+			return;
+		}
+		
+		// Child nodes
+		if (node.getRightNode() != null && node.getRightNode().getLevel() == -1) showRootLevel(node.getRightNode());
+		if (node.getLeftNode() != null && node.getLeftNode().getLevel() == -1) showRootLevel(node.getLeftNode());
+		
+		// Set Level
+		if (node.getLeftNode() == null) node.setLevel(node.getRightNode().getLevel() + 1);
+		else if (node.getRightNode() == null) node.setLevel(node.getLeftNode().getLevel() + 1);
+		else if (node.getLeftNode().getLevel() >= node.getRightNode().getLevel()) node.setLevel(node.getLeftNode().getLevel() + 1);
+		else node.setLevel(node.getRightNode().getLevel() + 1);
+		
+		// If Root and have level, returns
+		if (node.getRoot() == null && node.getLevel() != -1)
+		{
+			System.out.println("O nível do Root é " + node.getLevel());
+			resetTree(node);
+			return;
+		}
 	}
 }
