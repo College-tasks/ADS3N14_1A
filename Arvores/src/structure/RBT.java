@@ -8,15 +8,28 @@ package structure;
  * @param <S> "Key" of the Node
  */
 public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree<T, S> {
+	private int comp;
+	private int rot;
+	public int compTotal = 0;
+	public int rotTotal = 0;
+	private boolean flagBalanced;
+	
 	/**
 	 * Add a Node to the Tree
 	 * @param node Node to be added
 	 * @param showCount If it will show the Count of Nodes and the Level of the added Node
 	 */
-	@Override
-	public void addNode(Node<T, S> node, boolean showCount)
+
+	public void addNodeRBT(Node<T, S> node, boolean showCount)
 	{
-		addNode(node, getRoot(), 0, showCount);
+		compTotal += comp;
+		rotTotal += rot;
+		comp = 0;
+		rot = 0;
+		
+		node.setLeftNode(null);
+		node.setRightNode(null);
+		addNodeRBT(node, getRoot(), showCount, false);
 	}
 	
 	/**
@@ -26,11 +39,10 @@ public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree
 	 * @param level Level of the Node (Recursive)
 	 * @param showCount If it will show the Count of Nodes and the Level of the added Node
 	 */
-	private int addNode(Node<T, S> node, Node<T, S> root, int level, boolean showCount)
+	private void addNodeRBT(Node<T, S> node, Node<T, S> root, boolean showCount, boolean flagInserted)
 	{
 		if (root == null)
 		{
-			level = 0;
 			root = getRoot();
 		}
 		
@@ -38,64 +50,53 @@ public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree
 		if (getRoot() == null)
 		{
 			setRoot(node);
-			if (showCount)
-			{
-				// Show the level of the added Node and the Count of the Nodes
-				System.out.println("======================================");
-				System.out.println("O Nó foi adicionado no nível {" + level + "}.");
-				System.out.println("A contagem total de Nós é de: " + countNodes());
-				System.out.println("======================================");
-				System.out.println("Derp");
-			}
+			flagInserted = true;
 		}
 		else
 		{
 			// If node >= root
+			comp++;
 			if(root.getKey().compareTo(node.getKey()) <= 0)
 			{
-				level++;
 				if (root.getRightNode() != null)
 				{
-					level = addNode(node, root.getRightNode(), level, showCount);
+					addNodeRBT(node, root.getRightNode(), showCount, false);
 				}
 				else
 				{
 					node.setRoot(root);
 					root.setRightNode(node);
-					if (showCount)
-					{
-						// Show the level of the added Node and the Count of the Nodes
-						System.out.println("======================================");
-						System.out.println("O Nó foi adicionado no nível {" + level + "}.");
-						System.out.println("A contagem total de Nós é de: " + countNodes());
-						System.out.println("======================================");
-					}
+					flagInserted = true;
 				}
 			}
 			// If node < root
 			else 
 			{
-				level++;
 				if (root.getLeftNode() != null)
 				{
-					level = addNode(node, root.getLeftNode(), level, showCount);
+					addNodeRBT(node, root.getLeftNode(), showCount, false);
 				}
 				else
 				{
 					node.setRoot(root);
 					root.setLeftNode(node);
-					if (showCount)
-					{
-						// Show the level of the added Node and the Count of the Nodes
-						System.out.println("======================================");
-						System.out.println("O Nó foi adicionado no nível {" + level + "}.");
-						System.out.println("A contagem total de Nós é de: " + countNodes());
-						System.out.println("======================================");
-					}
+					flagInserted = true;
 				}
 			}
+			if (flagInserted)
+			{
+				verifyCases(node, true);
+				verifyCases();
+				if (showCount)
+				{
+					// Show the Tree
+					super.showRootLevel();
+					this.showRotComp();
+					this.showTree();
+				}
+			}
+			
 		}
-		return level;
 	}
 
 	// Delete Node
@@ -106,11 +107,18 @@ public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree
 	@Override
 	public void deleteNode(Node<T, S> node)
 	{
+		compTotal += comp;
+		rotTotal += rot;
+		comp = 0;
+		rot = 0; 
+		
 		Node<T, S> root = node.getRoot();
 		
+		comp++;
 		// Leaf
 		if (node.getLeftNode() == null && node.getRightNode() == null)
 		{
+			comp++;
 			// "Delete" the node
 			if (root.getLeftNode() != null && root.getLeftNode() == node)
 			{
@@ -124,9 +132,11 @@ public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree
 		// One Child
 		else if (node.getLeftNode() != null ^ node.getRightNode() != null)
 		{
+			comp++;
 			// Swap the child node
 			if (node.getLeftNode() != null)
 			{
+				comp++;
 				if (root.getLeftNode() != null && root.getLeftNode() == node)
 				{
 					root.setLeftNode(node.getLeftNode());
@@ -138,6 +148,7 @@ public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree
 			}
 			else
 			{
+				comp++;
 				if (root.getLeftNode() != null && root.getLeftNode() == node)
 				{
 					root.setLeftNode(node.getRightNode());
@@ -154,8 +165,10 @@ public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree
 			Node<T, S> rightNode = node.getRightNode();
 			Node<T, S> leftNode = node.getLeftNode();
 			
+			comp++;
 			if (root != null)
 			{
+				comp++;
 				// "Delete" the node
 				if (root.getLeftNode() != null && root.getLeftNode() == node)
 				{
@@ -176,53 +189,155 @@ public class RBT <T extends Comparable<T>, S extends Comparable<S>> extends Tree
 				addNode(rightNode, false);
 			}
 		}
+		
+		// Show the Tree
+		this.verifyCases();
+		super.showRootLevel();
+		this.showRotComp();
+		this.showTree();
+		
 	}
 
 	/**
-	 * Shows the Tree
-	 * @param node Node to be shown
+	 * Case 1: Red root
 	 */
-	@Override
-	public void showTree()
+	private void doCase1()
 	{
-		System.out.println("*Nodos vermelhos serão mostrados com um hífen antes da key*");
-		showTree(super.getRoot(), true);
+		this.getRoot().setBlack(true);
 	}
 	
 	/**
-	 * Shows the Tree (Recursive)
-	 * @param node Node to be shown
-	 * @param flag Recursive flag
+	 * Case 2: Parent and Uncle Red
+	 * @param node Node to be verified
 	 */
-	private void showTree(Node<T,S> node, boolean flag)
+	private void doCase2(Node<T, S> node)
 	{
-		boolean flagLeft = node.getLeftNode() == null ? false : true;
-		boolean flagRight = node.getRightNode() == null ? false : true;
+		Node<T, S> pNode = node.getRoot();
+		Node<T, S> gNode = node.getRoot().getRoot();
+		Node<T, S> uNode = gNode.getLeftNode() == pNode ? gNode.getRightNode() : gNode.getLeftNode();
 		
-		if (!node.isBlack()) { System.out.print("-"); }
-		System.out.print(node.getKey());
-		
-		if (flagLeft || flagRight)
+		// Repaints Parent, GrandP and Uncle
+		pNode.setBlack(!pNode.isBlack());
+		gNode.setBlack(!gNode.isBlack());
+		if (uNode != null) uNode.setBlack(!uNode.isBlack());
+	}
+	
+	/**
+	 * Case 3: Parent Red, Uncle Black (V formation)
+	 * @param node Node to be verified
+	 */
+	private void doCase3(Node<T, S> node)
+	{
+		Node<T, S> pNode = node.getRoot();
+		if (pNode.getLeftNode() == node)
 		{
-			System.out.print("(");
-			
-			// Left nodes
-			if (flagLeft)
-			{
-				showTree(node.getLeftNode(), true);
-				if (flagRight)
-				{
-					System.out.print(", ");
-				}
-			}
-			
-			// Right nodes
-			if (flagRight)
-			{
-				showTree(node.getRightNode(), true);
-			}
-			
-			System.out.print(")");
+			super.rightRotation(pNode);
+			rot++;
 		}
+		else
+		{
+			super.leftRotation(pNode);
+			rot++;
+		}
+	}
+	
+	/**
+	 * Case 4:  Parent Red, Uncle Black (Line formation)
+	 * @param node Node to be verified
+	 */
+	private void doCase4(Node<T, S> node)
+	{
+		Node<T, S> pNode = node.getRoot();
+		Node<T, S> gNode = pNode.getRoot();
+		
+		if (pNode.getLeftNode() == node)
+		{
+			super.rightRotation(gNode);
+			rot++;
+		}
+		else
+		{
+			super.leftRotation(gNode);
+			rot++;
+		}
+		
+		pNode.setBlack(!pNode.isBlack());
+		gNode.setBlack(!gNode.isBlack());
+	}
+	
+	/**
+	 * Verifies if is needed to do something with the node
+	 * @param node Initial Node
+	 */
+	private void verifyCases(Node<T, S> node, boolean flag)
+	{
+		if (this.getRoot() == node && !node.isBlack())
+		{
+			doCase1();
+			flagBalanced = true;
+		}
+		
+		if (node.getRoot() != null && node.getRoot().getRoot() != null && !node.getRoot().isBlack() && !node.isBlack())
+		{
+			Node<T, S> pNode = node.getRoot();
+			Node<T, S> gNode = pNode.getRoot();
+			Node<T, S> uNode = gNode.getLeftNode() == null || gNode.getRightNode() == null ? null : gNode.getLeftNode() == pNode ? gNode.getRightNode() : gNode.getLeftNode();
+			boolean pLeft = gNode.getLeftNode() == pNode;
+			boolean nLeft = pNode.getLeftNode() == node;
+			
+			if (uNode != null && !uNode.isBlack())
+			{
+				doCase2(node);
+				flagBalanced = true;
+			}
+			else if (pLeft != nLeft)
+			{
+				doCase3(node);
+				verifyCases(pNode);
+				flagBalanced = true;
+			}
+			else
+			{
+				doCase4(node);
+				flagBalanced = true;
+			}
+		}
+	}
+	
+	/**
+	 * Verifies if is needed to do something with the Tree
+	 */
+	private void verifyCases()
+	{
+		flagBalanced = false;
+		Node<T, S> rNode = this.getRoot();
+		
+		verifyCases(rNode);
+		
+		if (flagBalanced)
+		{
+			verifyCases();
+		}
+	}
+	
+	/**
+	 * Verifies if is needed to do something with the Tree (Recursive)
+	 * @param node Node to be checked
+	 */
+	private void verifyCases(Node<T, S> node)
+	{		
+		if (node.getLeftNode() != null) verifyCases(node.getLeftNode());
+		if (node.getRightNode() != null) verifyCases(node.getRightNode());	
+		
+		verifyCases(node, true);
+	}
+	
+	/**
+	 * Shows the number of rotations and comparisons made
+	 */
+	private void showRotComp()
+	{
+		System.out.println("Rotações: " + rot);
+		System.out.println("Comparações: " + comp);
 	}
 }

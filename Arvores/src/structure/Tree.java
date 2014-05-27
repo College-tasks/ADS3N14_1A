@@ -300,6 +300,8 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 		if (root.getKey().compareTo(key) == 0)
 		{
 			System.out.println("======================================");
+			if (this instanceof AVL) System.out.print("AVL: ");
+			else if (this instanceof RBT) System.out.print("RBT: ");
 			System.out.println("Comparações feitas para achar o Nó: " + count);
 			System.out.println("======================================");
 			return root;
@@ -333,7 +335,11 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 	public void showTree()
 	{
 		if (this instanceof AVL) System.out.print("AVL: ");
-		if (this instanceof RBT) System.out.print("RBT: ");
+		if (this instanceof RBT)
+		{
+			System.out.println("*Nodos vermelhos serão mostrados com um hífen antes da key*");
+			System.out.print("RBT: ");
+		}
 		showTree(this.getRoot());
 		System.out.println("");
 		System.out.println("======================");
@@ -347,6 +353,7 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 		boolean flagLeft = node.getLeftNode() == null ? false : true;
 		boolean flagRight = node.getRightNode() == null ? false : true;
 		
+		if (this instanceof RBT && !node.isBlack()) { System.out.print("-"); }
 		System.out.print(node.getKey());
 		
 		if (flagLeft || flagRight)
@@ -357,7 +364,6 @@ public class Tree <T extends Comparable<T>, S extends Comparable<S>> {
 			if (flagLeft)
 			{
 				showTree(node.getLeftNode());
-					
 			}
 			else 
 			{

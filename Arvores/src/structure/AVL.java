@@ -10,6 +10,8 @@ package structure;
 public class AVL<T extends Comparable<T>, S extends Comparable<S>> extends Tree<T, S> {
 	private int comp;
 	private int rot;
+	public int compTotal = 0;
+	public int rotTotal = 0;
 	
 	/**
 	 * Add a Node to the Tree
@@ -18,8 +20,11 @@ public class AVL<T extends Comparable<T>, S extends Comparable<S>> extends Tree<
 	 */
 	public void addNodeAVL(Node<T, S> node, boolean showCount)
 	{
+		compTotal += comp;
+		rotTotal += rot;
 		comp = 0;
 		rot = 0;
+		
 		addNodeAVL(node, getRoot(), showCount);
 	}
 	
@@ -67,9 +72,9 @@ public class AVL<T extends Comparable<T>, S extends Comparable<S>> extends Tree<
 					if (showCount)
 					{
 						// Show the Tree
+						this.showRotComp();
 						super.showTree();
 						super.showRootLevel();
-						this.showRotComp();
 					}
 				}
 			}
@@ -89,9 +94,9 @@ public class AVL<T extends Comparable<T>, S extends Comparable<S>> extends Tree<
 					if (showCount)
 					{
 						// Show the Tree
-						super.showTree();
 						super.showRootLevel();
 						this.showRotComp();
+						super.showTree();						
 					}
 				}
 			}
@@ -106,78 +111,61 @@ public class AVL<T extends Comparable<T>, S extends Comparable<S>> extends Tree<
 	@Override
 	public void deleteNode(Node<T, S> node)
 	{		
+		compTotal += comp;
+		rotTotal += rot;
 		comp = 0;
 		rot = 0;
 		
 		Node<T, S> root = node.getRoot();
 		
 		// Leaf
+		comp++;
 		if (node.getLeftNode() == null && node.getRightNode() == null)
 		{
 			// "Delete" the node
+			comp++;
 			if (root.getLeftNode() != null && root.getLeftNode() == node)
 			{
 				root.setLeftNode(null);
 				balanceTree(true);
-				// Show the Tree
-				super.showTree();
-				super.showRootLevel();
-				this.showRotComp();
 			}
 			else 
 			{
 				root.setRightNode(null);
 				balanceTree(true);
-				// Show the Tree
-				super.showTree();
-				super.showRootLevel();
-				this.showRotComp();
 			}
 		}
 		// One Child
 		else if (node.getLeftNode() != null ^ node.getRightNode() != null)
 		{
+			comp++;
 			// Swap the child node
 			if (node.getLeftNode() != null)
 			{
+				comp++;
 				if (root.getLeftNode() != null && root.getLeftNode() == node)
 				{
 					root.setLeftNode(node.getLeftNode());
 					balanceTree(true);
-					// Show the Tree
-					super.showTree();
-					super.showRootLevel();
-					this.showRotComp();
 				}
 				else 
 				{
 					root.setRightNode(node.getLeftNode());
 					balanceTree(true);
-					// Show the Tree
-					super.showTree();
-					super.showRootLevel();
-					this.showRotComp();
 				}
 			}
 			else
 			{
+				comp++;
 				if (root.getLeftNode() != null && root.getLeftNode() == node)
 				{
 					root.setLeftNode(node.getRightNode());
 					balanceTree(true);
-					// Show the Tree
-					super.showTree();
-					super.showRootLevel();
-					this.showRotComp();
 				}
 				else 
 				{
 					root.setRightNode(node.getRightNode());
 					balanceTree(true);
-					// Show the Tree
-					super.showTree();
-					super.showRootLevel();
-					this.showRotComp();
 				}
 			}
 		}
@@ -187,9 +175,11 @@ public class AVL<T extends Comparable<T>, S extends Comparable<S>> extends Tree<
 			Node<T, S> rightNode = node.getRightNode();
 			Node<T, S> leftNode = node.getLeftNode();
 			
+			comp++;
 			if (root != null)
 			{
 				// "Delete" the node
+				comp++;
 				if (root.getLeftNode() != null && root.getLeftNode() == node)
 				{
 					root.setLeftNode(null);
@@ -203,10 +193,6 @@ public class AVL<T extends Comparable<T>, S extends Comparable<S>> extends Tree<
 				addNodeAVL(rightNode, false);
 				
 				balanceTree(true);
-				// Show the Tree
-				super.showTree();
-				super.showRootLevel();
-				this.showRotComp();
 			}
 			else
 			{
@@ -215,12 +201,14 @@ public class AVL<T extends Comparable<T>, S extends Comparable<S>> extends Tree<
 				addNodeAVL(rightNode, false);
 				
 				balanceTree(true);
-				// Show the Tree
-				super.showTree();
-				super.showRootLevel();
-				this.showRotComp();
 			}
 		}
+		// Show the Tree
+		super.showRootLevel();
+		this.showRotComp();
+		this.showTree();
+		
+		
 	}
 
 	/**
@@ -283,11 +271,9 @@ public class AVL<T extends Comparable<T>, S extends Comparable<S>> extends Tree<
 			{
 				leftRotation(node.getLeftNode());
 				rot++;
-				if (showMsg) System.out.println("Uma rotação para a Esquerda foi efetuada.");
 			}
 			rightRotation(node);
 			rot++;
-			if (showMsg) System.out.println("Uma rotação para a Direta foi efetuada.");
 			resetTree();
 			balanceTree(showMsg);
 		}
@@ -297,11 +283,9 @@ public class AVL<T extends Comparable<T>, S extends Comparable<S>> extends Tree<
 			{
 				rightRotation(node.getRightNode());
 				rot++;
-				if (showMsg) System.out.println("Uma rotação para a Direta foi efetuada.");
 			}
 			leftRotation(node);
 			rot++;
-			if (showMsg) System.out.println("Uma rotação para a Esquerda foi efetuada.");
 			resetTree();
 			balanceTree(showMsg);
 		}
@@ -317,10 +301,5 @@ public class AVL<T extends Comparable<T>, S extends Comparable<S>> extends Tree<
 	{
 		System.out.println("Rotações: " + rot);
 		System.out.println("Comparações: " + comp);
-	}
-
-	private void resetRotComp()
-	{
-		
 	}
 }

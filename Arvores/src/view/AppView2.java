@@ -28,6 +28,7 @@ public class AppView2
 		}
 		
 		out.println("");
+		out.println("");
 	}
 	
 	/**
@@ -108,5 +109,17 @@ public class AppView2
 		} while(!flagOk);
 		
 		return value;
+	}
+	
+	/**
+	 * Show the total of rotations and comparisons of the trees
+	 * @param isAVL If the tree is AVL or not
+	 * @param comp Comparisons
+	 * @param rot Rotations
+	 */
+	public void showTotal(boolean isAVL, int comp, int rot)
+	{
+		if (isAVL) showError("AVL:\nComparações Totais: " + comp + "\nRotações totais: " + rot); 
+		else showError("RBT:\nComparações Totais: " + comp + "\nRotações totais: " + rot);
 	}
 }

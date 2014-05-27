@@ -39,7 +39,7 @@ public class AppController2 {
 	{
 		if (random)
 		{
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 50; i++)
 			{
 				numbers.add(Integer.valueOf((new Random().nextInt(100))));
 			}
@@ -48,14 +48,14 @@ public class AppController2 {
 		{
 			if (reverse)
 			{
-				for (int i = 11; i > 1; i--)
+				for (int i = 50; i > 0; i--)
 				{
 					numbers.add(Integer.valueOf(i));
 				}
 			}
 			else
 			{	
-				for (int i = 1; i < 11; i++)
+				for (int i = 1; i < 51; i++)
 				{
 					numbers.add(Integer.valueOf(i));
 				}
@@ -84,18 +84,21 @@ public class AppController2 {
 			createNumbers(true, false);
 			showNumbers();
 			createTrees();
+			showTrees();
 			showMain();
 			break;
 		case 2:
 			createNumbers(false, false);
 			showNumbers();
 			createTrees();
+			showTrees();
 			showMain();
 			break;
 		case 3:
 			createNumbers(false, true);
 			showNumbers();
 			createTrees();
+			showTrees();
 			showMain();
 			break;
 		case 0:
@@ -112,7 +115,7 @@ public class AppController2 {
 	 */
 	public void showMain()
 	{
-		showTrees();
+		//showTrees();
 		int op = view.showMain();
 		
 		switch(op)
@@ -138,12 +141,17 @@ public class AppController2 {
 	private void addNode()
 	{
 		Integer num = view.retInteger();
-		Node<Integer, Integer> node = new Node<Integer, Integer>(); 
-		node.setKey(num);
-		node.setValue(num);
+		Node<Integer, Integer> nodeAVL = new Node<Integer, Integer>();
+		Node<Integer, Integer> nodeRBT = new Node<Integer, Integer>();
+		nodeAVL.setValue(num);
+		nodeAVL.setKey(num);
 		
-		avl.addNodeAVL(node, true);
-		//rbt.addNodeRBT(node, true);
+		nodeRBT.setValue(num);
+		nodeRBT.setKey(num);
+		nodeRBT.setBlack(false);
+		
+		avl.addNodeAVL(nodeAVL, true);
+		rbt.addNodeRBT(nodeRBT, true);
 		
 		showMain();
 	}
@@ -155,7 +163,7 @@ public class AppController2 {
 	{
 		Integer num = view.retInteger();
 		Node<Integer, Integer> nodeDelAVL = avl.searchNode(num);
-		//Node<Integer, Integer> nodeDelRBT = rbt.searchNode(num);
+		Node<Integer, Integer> nodeDelRBT = rbt.searchNode(num);
 		
 		if (nodeDelAVL == null)
 		{
@@ -164,7 +172,7 @@ public class AppController2 {
 		else
 		{
 			avl.deleteNode(nodeDelAVL);
-			//rbt.deleteNode(nodeDelRBT);
+			rbt.deleteNode(nodeDelRBT);
 		}
 		
 		showMain();
@@ -180,13 +188,21 @@ public class AppController2 {
 		
 		for (Integer item : numbers)
 		{
-			Node<Integer, Integer> node = new Node<Integer, Integer>();
-			node.setValue(item);
-			node.setKey(item);
+			Node<Integer, Integer> nodeAVL = new Node<Integer, Integer>();
+			Node<Integer, Integer> nodeRBT = new Node<Integer, Integer>();
+			nodeAVL.setValue(item);
+			nodeAVL.setKey(item);
 			
-			avl.addNodeAVL(node, false);
-			//rbt.addNodeRBT(node, false);
+			nodeRBT.setValue(item);
+			nodeRBT.setKey(item);
+			nodeRBT.setBlack(false);
+			
+			avl.addNodeAVL(nodeAVL, false);
+			rbt.addNodeRBT(nodeRBT, false);
 		}
+		
+		view.showTotal(true, avl.compTotal, avl.rotTotal);
+		view.showTotal(false, rbt.compTotal, rbt.rotTotal);
 	}
 
 	/**
@@ -195,6 +211,6 @@ public class AppController2 {
 	private void showTrees()
 	{
 		avl.showTree();
-		//rbt.showTree();
+		rbt.showTree();
 	}
 }
