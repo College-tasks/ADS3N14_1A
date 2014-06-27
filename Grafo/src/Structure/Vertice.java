@@ -11,8 +11,7 @@ public class Vertice {
 	public String Nome;
 	public double X;
 	public double Y;
-	public ArrayList<Aresta> Arestas;
-	public boolean isA;
+	public ArrayList<ProxVertice> Proximo;
 	
 	/**
 	 * Construtor
@@ -24,6 +23,6 @@ public class Vertice {
 		this.Nome = nome;
 		this.X = x;
 		this.Y = y;
-		Arestas = new ArrayList<Aresta>();
+		Proximo = new ArrayList<ProxVertice>();
 	}
 }

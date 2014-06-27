@@ -10,6 +10,7 @@ import java.util.List;
 
 import Structure.Aresta;
 import Structure.Grafo;
+import Structure.ProxVertice;
 import Structure.Vertice;
 
 /**
@@ -47,11 +48,15 @@ public class Arquivo {
 	    	} // Arestas
 	    	else {
 	    		Aresta ar = new Aresta();
+	    		ProxVertice pvA = new ProxVertice();
+	    		ProxVertice pvB = new ProxVertice();
 	    		Vertice a = null, b = null;
+	    		
 	    		// A
 	    		for (Vertice itemV : vertices) {
 	    			if (itemV.Nome.equals(linhaSplit[0])) {
-	    				itemV.isA = true;
+	    				pvA.isA = true;
+	    				pvA.ProxVert = itemV;
 	    				ar.A = itemV;
 	    				a = itemV;
 	    				break;
@@ -61,7 +66,8 @@ public class Arquivo {
 	    		// B
 	    		for (Vertice itemV : vertices) {
 	    			if (itemV.Nome.equals(linhaSplit[1])) {
-	    				itemV.isA = false;
+	    				pvB.isA = false;
+	    				pvB.ProxVert = itemV;
 	    				ar.B = itemV;
 	    				b = itemV;
 	    				break;
@@ -71,12 +77,16 @@ public class Arquivo {
 	    		// Custo Aresta
 	    		ar.Custo = Double.parseDouble(linhaSplit[2]);
 	    		
-	    		// Calcula Aresta
+	    		// Calcula Distância
 	    		ar.calcula();
 	    		
+	    		// ProxVertice
+	    		pvA.Conex = ar;
+	    		pvB.Conex = ar;
+	    		
 	    		// Adiciona nos Vértices
-	    		a.Arestas.add(ar);
-	    		b.Arestas.add(ar);
+	    		a.Proximo.add(pvA);
+	    		b.Proximo.add(pvB);
 	    	}
 	    }
 	    
