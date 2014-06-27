@@ -14,16 +14,9 @@ public class Aresta {
 	public double Distancia;
 	
 	/**
-	 * Construtor
-	 * @param a Vertice A
-	 * @param b Vertice B
-	 * @param custo Custo da Aresta
+	 * Calcula a distância
 	 */
-	public Aresta(Vertice a, Vertice b, double custo) {
-		this.A = a;
-		this.B = b;
-		this.Custo = custo;
-		
+	public void calcula(){
 		// Calcula distância
 		this.Distancia = Math.sqrt(Math.pow(B.X - A.X, 2) + Math.pow(B.Y - A.Y, 2));
 	}

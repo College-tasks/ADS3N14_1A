@@ -15,6 +15,6 @@ public class Grafo {
 	 * Construtor - Cria o grafo a partir de um arquivo
 	 */
 	public Grafo(){
-		this.lstVertice = Arquivo.carrega();
+		Arquivo.carrega(this);
 	}
 }
