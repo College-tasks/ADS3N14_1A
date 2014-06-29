@@ -152,7 +152,7 @@ public class ControllerApp {
 	 * Efetua uma rota com Caixeiro Viajante utilizando custo (Modo não-tão-óbvio)
 	 */
 	private void caixeiroNaoObvio(){
-		ViewApp.mostraErro("Ainda não implementado (E nem será implementado, pois o arquivo de grafos está totalmente zoado)");
+		ViewApp.mostraErro("Não será implementado (Ler método \"Structure.Grafo.caixeiroNaoObvio()\" para explicação da ideia.");
 		initApp();
 	}
 

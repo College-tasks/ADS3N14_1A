@@ -109,10 +109,10 @@ public class Utils {
 		
 		// Preenche retorno
 		ret += "\n\n===============================\n";
-		ret += "Distância total: " + distancia + "km\n";
+		ret += "Distância total: " + distancia + " km\n";
 		ret += "Custo total: " + custo + "\n";
-		ret += "Gasolina total: " + gas + "l\n";
-		ret += "Tempo total (Sem contar com paradas): " + horas + "h\n";
+		ret += "Gasolina total: " + gas + " l\n";
+		ret += "Tempo total (Sem contar com paradas): " + horas + " h\n";
 		ret += "===============================\n\n";
 		
 		return ret;
@@ -149,10 +149,10 @@ public class Utils {
 		
 		// Preenche retorno
 		ret += "\n\n===============================\n";
-		ret += "Distância total: " + distancia + "km\n";
+		ret += "Distância total: " + distancia + " km\n";
 		ret += "Custo total: " + custo + "\n";
-		ret += "Gasolina total: " + gas + "l\n";
-		ret += "Tempo total (Sem contar com paradas): " + horas + "h\n";
+		ret += "Gasolina total: " + gas + " l\n";
+		ret += "Tempo total (Sem contar com paradas): " + horas + " h\n";
 		ret += "===============================\n\n";
 		
 		return ret;
