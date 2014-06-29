@@ -51,9 +51,9 @@ public class Grafo {
 				// (Para não passar de 3h de viagem)
 				if (reabastecimento && item.Conex.Distancia > 240) continue;
 				// Verifica se o Vertice já está na lista "para visitar" e não está na lista de já visitados
+				
 				if (!visitado.contains(item.ProxVert)) {
 					if (!paraVisitar.contains(item.ProxVert)) paraVisitar.add(item.ProxVert);
-					
 					// Recupera o Vertice atual da lista Dji
 					Dji djiAtual = null;
 					for (Dji item2 : lstDji) {
@@ -84,11 +84,13 @@ public class Grafo {
 					
 					// Configura o próximo Vértice a ser verificado
 					visitado.add(atual);
-					if (paraVisitar.contains(atual)) paraVisitar.remove(atual);
-					if (!paraVisitar.isEmpty()) {
-						atual = paraVisitar.get(0);
-					}
+					
 				}
+			}
+			
+			paraVisitar.remove(0);
+			if (!paraVisitar.isEmpty()) {
+				atual = paraVisitar.get(0);
 			}
 		} while (!paraVisitar.isEmpty());
 		
@@ -100,21 +102,44 @@ public class Grafo {
 			if (item.Atual == b) {
 				djiAtual = item;
 			}
-			
-			for (Dji item2 : lstDji) {
-				if (item2.Atual == djiAtual.Anterior) {
-					djiAnterior = item2;
-				}
-			}
-			
-			do {
-				rota.add(djiAtual.Atual);
-				djiAtual = djiAnterior;
-			} while (djiAtual.Atual != a);
 		}
+			
+		for (Dji item2 : lstDji) {	
+			if (djiAtual.Anterior == null) continue;
+			
+			if (item2.Atual == djiAtual.Anterior) {
+				djiAnterior = item2;
+			}
+		}
+		
+		boolean flagOk = true;
+		while (flagOk) {			
+			rota.add(djiAtual.Atual);
+			if (djiAtual.Anterior == null) {
+				flagOk = false;
+				break;
+			}
+			djiAtual = achaDji(lstDji, djiAtual.Anterior);
+		} ;
+		
 		
 		Collections.reverse(rota);
 		return rota;
+	}
+	
+	/**
+	 * Acha um vértice numa lista de Djis
+	 * @param djis Lista de Djis
+	 * @param v Vértice
+	 * @return Dji encontrado
+	 */
+	private Dji achaDji(ArrayList<Dji> djis, Vertice v) {
+		for (Dji item : djis) {
+			if (item.Atual == v) {
+				return item;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -154,6 +179,9 @@ public class Grafo {
 	 */
 	public ArrayList<VerticeParada> calcCaixeiroComParadas(ArrayList<Vertice> caminho) {
 		ArrayList<VerticeParada> rota = new ArrayList<VerticeParada>();
+		VerticeParada anterior = null;
+		double tempo = 0;
+		double gas = 40;
 		
 		// Adiciona caminho de ponto em ponto na rota
 		for (int i = 0; i < caminho.size()-1; i++) {
@@ -166,8 +194,31 @@ public class Grafo {
 				rota.add(vP);
 			}
 		}
-		// TODO: Verificar pontos de paradas e reabastecimento
-		
+
+		// Verifica paradas e descanso's
+		for (int i = 0; i < rota.size()-1; i++) {
+			// Verifica a aresta
+			Aresta aresta = null;
+			for (ProxVertice item : rota.get(i).Atual.Proximo) {
+				if (item.ProxVert == rota.get(i+1).Atual) {
+					aresta = item.Conex;
+					break;
+				}
+			}
+			
+			// Verifica se é necessário fazer uma parada no vértice anterior
+			if (tempo + (aresta.Distancia / 80) > 3) {
+				anterior.TemDescanso = true;
+				tempo = 0;
+			}
+			if (gas - (aresta.Distancia / 15) <= 0) {
+				anterior.TemReabastecimento = true;
+				gas = 40;
+			}
+			
+			// Seta o anterior
+			anterior = rota.get(i);
+		}
 		
 		return rota;
 	}

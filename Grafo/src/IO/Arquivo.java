@@ -82,8 +82,8 @@ public class Arquivo {
 	    		pvB.Conex = ar;
 	    		
 	    		// Adiciona nos Vértices
-	    		a.Proximo.add(pvA);
-	    		b.Proximo.add(pvB);
+	    		a.Proximo.add(pvB);
+	    		b.Proximo.add(pvA);
 	    	}
 	    }
 	    

@@ -12,7 +12,7 @@ public class Dji {
 	
 	public Dji(Vertice atual){
 		this.Atual = atual;
-		this.Custo = 999999999;
+		this.Custo = 999999;
 		this.Anterior = null;
 	}
 }
