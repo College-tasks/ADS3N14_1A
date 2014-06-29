@@ -116,4 +116,59 @@ public class Grafo {
 		Collections.reverse(rota);
 		return rota;
 	}
+
+	/**
+	 * Calcula uma rota do tipo Caixeiro Viajante se baseando em Custo (Modo óbvio)
+	 * @param caminho Pontos que a rota deve passar
+	 * @return Rota calculada
+	 */
+	public ArrayList<Vertice> calcCaixeiroObvio(ArrayList<Vertice> caminho) {
+		ArrayList<Vertice> rota = new ArrayList<Vertice>();
+		
+		// Adiciona caminho de ponto em ponto na rota
+		for (int i = 0; i < caminho.size()-1; i++) {
+			ArrayList<Vertice> caminhoTemp = calcDij(caminho.get(i), caminho.get(i+1), true, false);
+			for (Vertice item : caminhoTemp) {
+				rota.add(item);
+			}
+		}
+		
+		return rota;
+	}
+	
+	/**
+	 * Calcula uma rota do tipo Caixeiro Viajante se baseando em Custo (Modo não-tão-óbvio)
+	 * @param caminho Pontos que a rota deve passar
+	 * @return Rota calculada
+	 */
+	public ArrayList<Vertice> calcCaixeiroNaoObvio(ArrayList<Vertice> caminho) {
+		ArrayList<Vertice> rota = new ArrayList<Vertice>();
+		return rota;
+	}
+	
+	/**
+	 * Calcula uma rota do tipo Caixeiro Viajante, se baseando em distância
+	 * (Com paradas para reabastecimento e descanso)
+	 * @param caminho Pontos que a rota deve passar
+	 * @return Rota calculada
+	 */
+	public ArrayList<VerticeParada> calcCaixeiroComParadas(ArrayList<Vertice> caminho) {
+		ArrayList<VerticeParada> rota = new ArrayList<VerticeParada>();
+		
+		// Adiciona caminho de ponto em ponto na rota
+		for (int i = 0; i < caminho.size()-1; i++) {
+			ArrayList<Vertice> caminhoTemp = calcDij(caminho.get(i), caminho.get(i+1), false, true);
+			for (Vertice item : caminhoTemp) {
+				VerticeParada vP = new VerticeParada();
+				vP.Atual = item;
+				vP.TemDescanso = false;
+				vP.TemReabastecimento = false;
+				rota.add(vP);
+			}
+		}
+		// TODO: Verificar pontos de paradas e reabastecimento
+		
+		
+		return rota;
+	}
 }

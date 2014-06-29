@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
 import Structure.Aresta;
 import Structure.Grafo;
@@ -55,7 +54,6 @@ public class Arquivo {
 	    		// A
 	    		for (Vertice itemV : vertices) {
 	    			if (itemV.Nome.equals(linhaSplit[0])) {
-	    				pvA.isA = true;
 	    				pvA.ProxVert = itemV;
 	    				ar.A = itemV;
 	    				a = itemV;
@@ -66,7 +64,6 @@ public class Arquivo {
 	    		// B
 	    		for (Vertice itemV : vertices) {
 	    			if (itemV.Nome.equals(linhaSplit[1])) {
-	    				pvB.isA = false;
 	    				pvB.ProxVert = itemV;
 	    				ar.B = itemV;
 	    				b = itemV;

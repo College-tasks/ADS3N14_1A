@@ -3,7 +3,6 @@ package Utils;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import Structure.Aresta;
 import Structure.ProxVertice;
 import Structure.Vertice;
 
@@ -63,7 +62,6 @@ public class Utils {
 		ArrayList<Integer> ret = new ArrayList<Integer>();
 		
 		do {
-			boolean valido = true;
 			p = retInt();
 			
 			if (p == 0) break; // Verifica se é para parar
