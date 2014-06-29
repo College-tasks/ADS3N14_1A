@@ -27,7 +27,7 @@ public class Grafo {
 	 * @param custo Flag para fazer a verificação pelo Custo ou Distância
 	 * @return Rota de menor custo
 	 */
-	public ArrayList<Vertice> calcDij(Vertice a, Vertice b, boolean custo) {
+	public ArrayList<Vertice> calcDij(Vertice a, Vertice b, boolean custo, boolean reabastecimento) {
 		ArrayList<Vertice> visitado = new ArrayList<Vertice>();
 		ArrayList<Vertice> paraVisitar = new ArrayList<Vertice>();
 		ArrayList<Dji> lstDji = new ArrayList<Dji>();
@@ -47,6 +47,9 @@ public class Grafo {
 		// Calcula os custos
 		do {
 			for (ProxVertice item : atual.Proximo) {
+				// Se for calcular o algoritmo de reabastecimento, ignora caminhos maior que 240km
+				// (Para não passar de 3h de viagem)
+				if (reabastecimento && item.Conex.Distancia > 240) continue;
 				// Verifica se o Vertice já está na lista "para visitar" e não está na lista de já visitados
 				if (!visitado.contains(item.ProxVert)) {
 					if (!paraVisitar.contains(item.ProxVert)) paraVisitar.add(item.ProxVert);
